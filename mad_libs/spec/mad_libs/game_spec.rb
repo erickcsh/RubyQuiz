@@ -27,5 +27,13 @@ describe MadLibs::Game, "#play" do
 
       its(:play) { should == SUBSTITUTE_2_SUBSTITUTED }
     end
+
+    context "when there are 3 same inputs but only 2 repeated" do
+      subject { described_class.new(SUBSTITUTE_3) }
+
+      before { allow(STDIN).to receive(:gets).and_return("#{A_GEM}\n", "#{OTHER_GEM}\n") }
+
+      its(:play) { should == SUBSTITUTE_3_SUBSTITUTED }
+    end
   end
 end
