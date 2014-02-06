@@ -3,7 +3,7 @@ module MadLibs
 
     def initialize(message)
       @message = message
-      @symbols = {}
+      @reused_words = {}
     end
 
     def play
@@ -14,21 +14,30 @@ module MadLibs
     def retrieve_substitutions
       @message.scan(/\(\([^)]*\)\)/).reduce([]) do |message, word|
         word.gsub!(/[()]/,'')
-        if(word.match(/[^:]*:.*/))
+        message << find_substitution(word)
+      end
+    end
+
+    def find_substitution(word)
+      case
+      when reusable?(word) then save_and_get_reusable(word)
+      else find_not_declaring_substitution(word)
+      end
+    end
+
+    def reusable?(word)
+      word.match(/[^:]*:.*/)
+    end
+
+    def save_and_get_reusable(word)
           sym = word[/[^:]*/]
-          print sym
           word.sub!(/[^:]*:/,'')
           word = ask_substitution(word)
-          @symbols[sym.to_sym] = word
-        else
-          if(@symbols[word.to_sym])
-            word = @symbols[word.to_sym]
-          else
-            word = ask_substitution(word)
-          end
-        end
-        message << word
-      end
+          @reused_words[sym.to_sym] = word
+    end
+
+    def find_not_declaring_substitution(word)
+      @reused_words[word.to_sym] || ask_substitution(word)
     end
 
     def ask_substitution(word)
