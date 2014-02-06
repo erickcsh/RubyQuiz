@@ -1,8 +1,9 @@
 module MadLibs
   class Game
 
-    def initialize(message)
+    def initialize(message, console)
       @message = message
+      @console = console
       @reused_words = {}
     end
 
@@ -30,19 +31,13 @@ module MadLibs
     end
 
     def save_and_get_reusable(word)
-          sym = word[/[^:]*/]
+          sym = word[/[^:]*/].to_sym
           word.sub!(/[^:]*:/,'')
-          word = ask_substitution(word)
-          @reused_words[sym.to_sym] = word
+          @reused_words[sym] = @console.ask_substitution(word)
     end
 
     def find_not_declaring_substitution(word)
-      @reused_words[word.to_sym] || ask_substitution(word)
-    end
-
-    def ask_substitution(word)
-        STDOUT.puts("Enter #{word}")
-        STDIN.gets.chop
+      @reused_words[word.to_sym] || @console.ask_substitution(word)
     end
 
     def substitute(substitutions)
