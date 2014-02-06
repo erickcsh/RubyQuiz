@@ -19,7 +19,13 @@ describe MadLibs::Game, "#play" do
     its(:play) { should == SUBSTITUTE_1_SUBSTITUTED }
   end
 
-  context "when there are more than one substitutions" do
-    
+  context "when there is more than one substitution" do
+    context "when there is a repetition" do
+      subject { described_class.new(SUBSTITUTE_2) }
+
+      before { allow(STDIN).to receive(:gets).once {"#{A_GEM}\n" } }
+
+      its(:play) { should == SUBSTITUTE_2_SUBSTITUTED }
+    end
   end
 end
