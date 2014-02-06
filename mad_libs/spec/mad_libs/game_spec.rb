@@ -1,10 +1,25 @@
 require 'mad_libs'
+require 'constants'
 
 describe MadLibs::Game, "#play" do
 
-  context "when message is not substitutable" do
-    subject { described_class.new("Not substitutable") }
+  before { allow(STDOUT).to receive(:puts) }
 
-    its(:play) { should eq("Not substitutable") }
+  context "when message is not substitutable" do
+    subject { described_class.new(NOT_SUBSTITUTABLE)}
+
+    its(:play) { should == NOT_SUBSTITUTABLE }
+  end
+
+  context "when there is one substitution" do
+    subject { described_class.new(SUBSTITUTE_1) }
+
+    before { allow(STDIN).to receive(:gets) {"#{A_GEM}\n" } }
+
+    its(:play) { should == SUBSTITUTE_1_SUBSTITUTED }
+  end
+
+  context "when there are more than one substitutions" do
+    
   end
 end
