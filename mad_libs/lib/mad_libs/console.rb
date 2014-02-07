@@ -5,7 +5,7 @@ module MadLibs
     include Singleton
 
     def ask_substitution(word)
-        read_input("Enter #{word}")
+      read_input("Enter #{word}")
     end
 
     def ask_message

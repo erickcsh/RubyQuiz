@@ -1,6 +1,11 @@
 module MadLibs
   class Game
 
+    SUBSTITUTABLE = /\(\([^)]*\)\)/
+    REUSABLE = /[^:]*:.*/
+    REUSABLE_NAME = /[^:]*/
+    REUSABLE_START = /[^:]*:/
+
     def initialize(message, console)
       @message = message
       @console = console
@@ -13,26 +18,25 @@ module MadLibs
 
     private
     def retrieve_substitutions
-      @message.scan(/\(\([^)]*\)\)/).reduce([]) do |message, word|
+      @message.scan(SUBSTITUTABLE).reduce([]) do |message, word|
         word.gsub!(/[()]/,'')
         message << find_substitution(word)
       end
     end
 
     def find_substitution(word)
-      case
-      when reusable?(word) then save_and_get_reusable(word)
+      if reusable?(word) then save_and_get_reusable(word)
       else find_not_declaring_substitution(word)
       end
     end
 
     def reusable?(word)
-      word.match(/[^:]*:.*/)
+      word.match(REUSABLE)
     end
 
     def save_and_get_reusable(word)
-          sym = word[/[^:]*/].to_sym
-          word.sub!(/[^:]*:/,'')
+          sym = word[REUSABLE_NAME].to_sym
+          word.sub!(REUSABLE_START, '')
           @reused_words[sym] = @console.ask_substitution(word)
     end
 
@@ -41,7 +45,7 @@ module MadLibs
     end
 
     def substitute(substitutions)
-      substitutions.reduce(@message) { |message, word| message.sub(/\(\([^)]*\)\)/, word) }
+      substitutions.reduce(@message) { |message, word| message.sub(SUBSTITUTABLE, word) }
     end
   end
 end
