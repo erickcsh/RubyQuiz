@@ -1,7 +1,16 @@
 module LCD
   class DisplayBuilder
 
-    MIN_LINES = 5
+    LCD_NUMBERS = { '0' => { top: '-', middle_top: { left: '|', center: ' ', right: '|' }, middle: ' ', middle_bottom: { left: '|', center: ' ', right: '|' }, bottom: '-' },
+                    '1' => { top: ' ', middle_top: { left: ' ', center: ' ', right: '|' }, middle: ' ', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: ' ' },
+                    '2' => { top: '-', middle_top: { left: ' ', center: ' ', right: '|' }, middle: '-', middle_bottom: { left: '|', center: ' ', right: ' ' }, bottom: '-' },
+                    '3' => { top: '-', middle_top: { left: ' ', center: ' ', right: '|' }, middle: '-', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: '-' },
+                    '4' => { top: ' ', middle_top: { left: '|', center: ' ', right: '|' }, middle: '-', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: ' ' },
+                    '5' => { top: '-', middle_top: { left: '|', center: ' ', right: ' ' }, middle: '-', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: '-' },
+                    '6' => { top: '-', middle_top: { left: '|', center: ' ', right: ' ' }, middle: '-', middle_bottom: { left: '|', center: ' ', right: '|' }, bottom: '-' },
+                    '7' => { top: '-', middle_top: { left: ' ', center: ' ', right: '|' }, middle: ' ', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: ' ' },
+                    '8' => { top: '-', middle_top: { left: '|', center: ' ', right: '|' }, middle: '-', middle_bottom: { left: '|', center: ' ', right: '|' }, bottom: '-' },
+                    '9' => { top: '-', middle_top: { left: '|', center: ' ', right: '|' }, middle: '-', middle_bottom: { left: ' ', center: ' ', right: '|' }, bottom: ' ' } }
 
     attr_reader :lcd_numbers
 
@@ -18,47 +27,49 @@ module LCD
     end
 
     def lcd_body
-      "\n" << top_line << middle_top_line << middle_line << middle_bottom_line << bottom_line
+      "\n" << top_line << "\n" << middle_top_line << "\n" << middle_line << "\n" << middle_bottom_line << "\n" << bottom_line << "\n"
     end
 
     def top_line
-      @number.split.reduce('') { |acc, number| acc << number_top_line(number) }
+      @number.split.reduce('') { |acc, number| acc + number_top_line(number) }
     end
 
     def number_top_line(number)
-      " - \n"
+      ' ' + LCD_NUMBERS[number][:top] + ' '
     end
 
     def middle_top_line
-      @number.split.reduce('') { |acc, number| acc << number_middle_top_line(number) }
+      @number.split.reduce('') { |acc, number| acc + number_middle_top_line(number) }
     end
 
     def number_middle_top_line(number)
-      "| |\n"
+      lcd = LCD_NUMBERS[number][:middle_top]
+      lcd[:left] + lcd[:center] + lcd[:right]
     end
 
     def middle_line
-      @number.split.reduce('') { |acc, number| acc << number_middle_line(number) }
+      @number.split.reduce('') { |acc, number| acc + number_middle_line(number) }
     end
 
     def number_middle_line(number)
-      "   \n"
+      ' ' + LCD_NUMBERS[number][:middle] + ' '
     end
 
     def middle_bottom_line
-      @number.split.reduce('') { |acc, number| acc << number_middle_bottom_line(number) }
+      @number.split.reduce('') { |acc, number| acc + number_middle_bottom_line(number) }
     end
 
     def number_middle_bottom_line(number)
-      "| |\n"
+      lcd = LCD_NUMBERS[number][:middle_bottom]
+      lcd[:left] + lcd[:center] + lcd[:right]
     end
 
     def bottom_line
-      @number.split.reduce('') { |acc, number| acc << number_bottom_line(number) }
+      @number.split.reduce('') { |acc, number| acc + number_bottom_line(number) }
     end
 
     def number_bottom_line(number)
-      " - \n"
+      ' ' + LCD_NUMBERS[number][:bottom] + ' '
     end
   end
 end
