@@ -7,7 +7,7 @@ Feature: Display number
   Scenario Outline: no size defined
     Given I started the program
     When I enter the number <number>
-    Then the display should be <display>
+    Then I see <display>
 
     Examples:
       | number    | display      |
@@ -18,7 +18,7 @@ Feature: Display number
     Given I started the program
     When I enter the number <number>
     And I enter the size <size>
-    Then the display should be <display>
+    Then I see <display>
 
     Examples:
       | number    | size |  display    |

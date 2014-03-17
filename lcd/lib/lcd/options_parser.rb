@@ -1,5 +1,5 @@
 module LCD
-  module ARGVParser
+  module OptionsParser
 
     SIZE_OPTION = '-s'
 
@@ -14,8 +14,10 @@ module LCD
     end
 
     def self.parse_arg(arg)
-      if arg == SIZE_OPTION then @size = ARGV.shift.to_i
-      else @number = arg
+      if arg == SIZE_OPTION 
+        @size = ARGV.shift.to_i
+      else
+        @number = arg
       end
     end
 

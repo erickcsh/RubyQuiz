@@ -4,115 +4,46 @@ require_relative '../constants'
 describe LCD::DisplayBuilder, '#lcd_numbers' do
   subject { described_class.new(args) }
 
-  context "when there is a single number and size is 1" do
-    context "when the number is 0" do
-      let(:args) { { number: '0', size: 1 } }
+  shared_examples "lcd number" do |number, size, comparison|
+    context "when the number is #{number} and size is #{size}" do
+      let(:args) { { number: number, size: size } }
 
-      it "generates the 0 lcd number" do
-        expect(subject.lcd_numbers).to eq(ZERO_SIZE_1)
+      it "generates the #{number} lcd number" do
+        expect(subject.lcd_numbers).to eq(comparison)
       end
-    end
 
-    context "when the number is 1" do
-      let(:args) { { number: '1', size: 1 } }
-
-      it "generates the 1 lcd number" do
-        expect(subject.lcd_numbers).to eq(ONE_SIZE_1)
-      end
-    end
-
-    context "when the number is 2" do
-      let(:args) { { number: '2', size: 1 } }
-
-      it "generates the 2 lcd number" do
-        expect(subject.lcd_numbers).to eq(TWO_SIZE_1)
-      end
-    end
-
-    context "when the number is 3" do
-      let(:args) { { number: '3', size: 1 } }
-
-      it "generates the 3 lcd number" do
-        expect(subject.lcd_numbers).to eq(THREE_SIZE_1)
-      end
-    end
-
-    context "when the number is 4" do
-      let(:args) { { number: '4', size: 1 } }
-
-      it "generates the 4 lcd number" do
-        expect(subject.lcd_numbers).to eq(FOUR_SIZE_1)
-      end
-    end
-
-    context "when the number is 5" do
-      let(:args) { { number: '5', size: 1 } }
-
-      it "generates the 5 lcd number" do
-        expect(subject.lcd_numbers).to eq(FIVE_SIZE_1)
-      end
-    end
-
-    context "when the number is 6" do
-      let(:args) { { number: '6', size: 1 } }
-
-      it "generates the 6 lcd number" do
-        expect(subject.lcd_numbers).to eq(SIX_SIZE_1)
-      end
-    end
-
-    context "when the number is 7" do
-      let(:args) { { number: '7', size: 1 } }
-
-      it "generates the 7 lcd number" do
-        expect(subject.lcd_numbers).to eq(SEVEN_SIZE_1)
-      end
-    end
-
-    context "when the number is 8" do
-      let(:args) { { number: '8', size: 1 } }
-
-      it "generates the 8 lcd number" do
-        expect(subject.lcd_numbers).to eq(EIGHT_SIZE_1)
-      end
-    end
-
-    context "when the number is 9" do
-      let(:args) { { number: '9', size: 1 } }
-
-      it "generates the 9 lcd number" do
-        expect(subject.lcd_numbers).to eq(NINE_SIZE_1)
-      end
     end
   end
 
-  context "when there several numbers and size 1" do
-    context "when the number is 123456789" do
-      let(:args) { { number: '123456789', size: 1 } }
+  it_behaves_like "lcd number", '0', 1, ZERO_SIZE_1
+  it_behaves_like "lcd number", '1', 1, ONE_SIZE_1
+  it_behaves_like "lcd number", '2', 1, TWO_SIZE_1
+  it_behaves_like "lcd number", '3', 1, THREE_SIZE_1
+  it_behaves_like "lcd number", '4', 1, FOUR_SIZE_1
+  it_behaves_like "lcd number", '5', 1, FIVE_SIZE_1
+  it_behaves_like "lcd number", '6', 1, SIX_SIZE_1
+  it_behaves_like "lcd number", '7', 1, SEVEN_SIZE_1
+  it_behaves_like "lcd number", '8', 1, EIGHT_SIZE_1
+  it_behaves_like "lcd number", '9', 1, NINE_SIZE_1
+  it_behaves_like "lcd number", '123456789', 1, LONG_SIZE_1
+  it_behaves_like "lcd number", '0', 2, ZERO_SIZE_2
+  it_behaves_like "lcd number", '123456789', 2, LONG_SIZE_2
+end
 
-      it "generates the 123456789 lcd number" do
-        expect(subject.lcd_numbers).to eq(LONG_SIZE_1)
-      end
-    end
+describe LCD::DisplayBuilder, '#respond_to?' do
+  let(:args) { { number: '0', size: 1 } }
+
+  subject { described_class.new(args) }
+
+  it "responds to 'lcd_numbers'" do
+    expect(subject.respond_to?(:lcd_numbers)).to be_true
   end
 
-  context "when there is a single number and size is 2" do
-    context "when the number is 0" do
-      let(:args) { { number: '0', size: 2 } }
-
-      it "generates the 0 lcd number" do
-        expect(subject.lcd_numbers).to eq(ZERO_SIZE_2)
-      end
-    end
+  it "responds to 'top_line'" do
+    expect(subject.respond_to?(:top_line)).to be_true
   end
 
-  context "when there are several numbers and size is 2" do
-    context "when the number is 123456789" do
-      let(:args) { { number: '123456789', size: 2 } }
-
-      it "generates the 123456789 lcd number" do
-        expect(subject.lcd_numbers).to eq(LONG_SIZE_2)
-      end
-    end
+  it "does not respond to 'not_existing_method'" do
+    expect(subject.respond_to?(:not_existing_method)).to be_false
   end
 end

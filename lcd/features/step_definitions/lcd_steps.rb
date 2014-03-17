@@ -1,7 +1,6 @@
-Then(/^the display should be (.*)$/) do |number|
+Then(/^I see (.*)$/) do |number|
   formatted_number =  Object.const_get(number)
-  p formatted_number
-  display = LCD::DisplayBuilder.new(LCD::ARGVParser.options).lcd_numbers
+  display = LCD::DisplayBuilder.new(LCD::OptionsParser.options).lcd_numbers
   expect(display).to eq(formatted_number)
 end
 
@@ -13,8 +12,7 @@ When(/^I enter the number (\d+)$/) do |arg1|
 end
 
 When(/^I enter the size (\d+)$/) do |arg1|
-  ARGV << '-s'
-  ARGV << arg1
+  ARGV += ['-s', arg1]
 end
 
 ZERO_SIZE_1 =
