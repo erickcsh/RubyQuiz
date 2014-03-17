@@ -4,7 +4,7 @@ require_relative '../constants'
 describe LCD::DisplayBuilder, '#lcd_numbers' do
   subject { described_class.new(args) }
 
-  context "when there is a single number" do
+  context "when there is a single number and size is 1" do
     context "when the number is 0" do
       let(:args) { { number: '0', size: 1 } }
 
@@ -82,6 +82,36 @@ describe LCD::DisplayBuilder, '#lcd_numbers' do
 
       it "generates the 9 lcd number" do
         expect(subject.lcd_numbers).to eq(NINE_SIZE_1)
+      end
+    end
+  end
+
+  context "when there several numbers and size 1" do
+    context "when the number is 123456789" do
+      let(:args) { { number: '123456789', size: 1 } }
+
+      it "generates the 123456789 lcd number" do
+        expect(subject.lcd_numbers).to eq(LONG_SIZE_1)
+      end
+    end
+  end
+
+  context "when there is a single number and size is 2" do
+    context "when the number is 0" do
+      let(:args) { { number: '0', size: 2 } }
+
+      it "generates the 0 lcd number" do
+        expect(subject.lcd_numbers).to eq(ZERO_SIZE_2)
+      end
+    end
+  end
+
+  context "when there are several numbers and size is 2" do
+    context "when the number is 123456789" do
+      let(:args) { { number: '123456789', size: 2 } }
+
+      it "generates the 123456789 lcd number" do
+        expect(subject.lcd_numbers).to eq(LONG_SIZE_2)
       end
     end
   end
