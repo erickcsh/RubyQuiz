@@ -1,2 +1,5 @@
 #!/usr/bin/ruby
 
+require_relative '../lib/lcd'
+
+puts LCD::DisplayBuilder.new(LCD::ARGVParser.options).lcd_numbers
